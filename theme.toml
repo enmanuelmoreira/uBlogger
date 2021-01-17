@@ -4,8 +4,8 @@
 name = "uBlogger"
 license = "MIT"
 licenselink = "https://github.com/upagge/uBlogger/blob/master/LICENSE"
-description = "A Clean, Elegant but Advanced Hugo Theme for Hugo."
-homepage = "https://blog.upagge.com"
+description = "The whole focus of the topic is on ease of reading for visitors and SEO optimization."
+homepage = "https://ublogger.netlify.app"
 tags = [
   "blog",
   "clean",

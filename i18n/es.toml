@@ -45,7 +45,7 @@ other = "Más"
 
 # === partials/header.html ===
 [selectLanguage]
-other = "Selecciona el lenguage"
+other = "Selecciona el idioma"
 
 [switchTheme]
 other = "Cambia el tema"
@@ -137,8 +137,6 @@ other = "Regresar"
 [home]
 other = "Inicio"
 
-[readMore]
-other = "Leer más"
 # === posts/single.html ===
 
 # === 404.html ===

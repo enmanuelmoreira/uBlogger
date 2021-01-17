@@ -83,10 +83,14 @@ class Theme {
     initSwitchTheme() {
         this.util.forEach(document.getElementsByClassName('theme-switch'), $themeSwitch => {
             $themeSwitch.addEventListener('click', () => {
-                if (document.body.getAttribute('theme') === 'dark') document.body.setAttribute('theme', 'light');
-                else document.body.setAttribute('theme', 'dark');
+                if (document.body.getAttribute('theme') === 'dark') {
+                    document.body.setAttribute('theme', 'light');
+                } else {
+                    document.body.setAttribute('theme', 'dark');
+                }
                 this.isDark = !this.isDark;
                 window.localStorage && localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+                window.REMARK42.changeTheme(document.body.getAttribute('theme') === 'dark' ? 'dark' : 'light');
                 for (let event of this.switchThemeEventSet) event();
             }, false);
         });
@@ -377,7 +381,7 @@ class Theme {
     }
 
     initTable() {
-        this.util.forEach(document.querySelectorAll('.content table'), $table => {
+        this.util.forEach(document.querySelectorAll('.single table'), $table => {
             const $wrapper = document.createElement('div');
             $wrapper.className = 'table-wrapper';
             $table.parentElement.replaceChild($wrapper, $table);
@@ -387,7 +391,7 @@ class Theme {
 
     initHeaderLink() {
         for (let num = 1; num <= 6; num++) {
-            this.util.forEach(document.querySelectorAll('.single .content > h' + num), $header => {
+            this.util.forEach(document.querySelectorAll('h' + num), $header => {
                 $header.classList.add('headerLink');
                 $header.insertAdjacentHTML('afterbegin', `<a href="#${$header.id}" class="header-mark"></a>`);
             });
@@ -411,7 +415,7 @@ class Theme {
                 $tocContentAuto.appendChild($tocCore);
             }
             const $toc = document.getElementById('toc-auto');
-            const $page = document.getElementsByClassName('page')[0];
+            const $page = document.getElementsByClassName('content-block')[0];
             const rect = $page.getBoundingClientRect();
             $toc.style.left = `${rect.left + rect.width + 20}px`;
             $toc.style.maxWidth = `${$page.getBoundingClientRect().left - 20 + 314}px`;
@@ -425,7 +429,7 @@ class Theme {
             const minTocTop = $toc.offsetTop;
             const minScrollTop = minTocTop - TOP_SPACING + (headerIsFixed ? 0 : headerHeight);
             this._tocOnScroll = this._tocOnScroll || (() => {
-                const footerTop = document.getElementById('post-footer').offsetTop;
+                const footerTop = document.getElementById('toc-final').offsetTop;
                 const maxTocTop = footerTop - $toc.getBoundingClientRect().height;
                 const maxScrollTop = maxTocTop - TOP_SPACING + (headerIsFixed ? 0 : headerHeight);
                 if (this.newScrollTop < minScrollTop) {
@@ -446,8 +450,7 @@ class Theme {
                 for (let i = 0; i < $headerLinkElements.length - 1; i++) {
                     const thisTop = $headerLinkElements[i].getBoundingClientRect().top;
                     const nextTop = $headerLinkElements[i + 1].getBoundingClientRect().top;
-                    if ((i == 0 && thisTop > INDEX_SPACING)
-                     || (thisTop <= INDEX_SPACING && nextTop > INDEX_SPACING)) {
+                    if ((i === 0 && thisTop > INDEX_SPACING) || (thisTop <= INDEX_SPACING && nextTop > INDEX_SPACING)) {
                         activeTocIndex = i;
                         break;
                     }

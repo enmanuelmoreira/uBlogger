@@ -1,11 +1,13 @@
 ---
 title: "Theme Documentation - Content"
 date: 2020-03-05T15:58:26+08:00
-lastmod: 2020-03-05T15:58:26+08:00
+lastmod: 2020-03-15T11:26:13+08:00
 description: "Find out how to create and organize your content quickly and intuitively in uBlogger theme."
 resources:
 - name: "featured-image"
   src: "featured-image.jpg"
+  
+upd: "You can now customize the post preview design"
 
 tags: ["content", "Markdown"]
 categories: ["documentation"]
@@ -87,10 +89,28 @@ upd: ""
 # {{< version 1.0.0 new >}} Author's comment, is shown above all comments
 authorComment: ""
 
-page:
-    # {{< version 1.0.0 new >}} article design theme
-    theme: ""
+# {{< version 1.2.0 change >}} article design theme
+theme: ""
+# {{< version 1.2.0 new >}} Allows you to hide the preview image on the article page
+hiddenFeaturedImage: false
 
+# {{< version 1.2.0 change >}} Post display settings on the page
+summaryStyle:
+    # {{< version 1.1.0 new >}} Display previews on the page of posts
+    hiddenImage: false
+    # {{< version 1.1.0 new >}} Allows you to hide the description
+    hiddenDescription: false
+    # {{< version 1.1.0 new >}} Allows you to hide the title
+    hiddenTitle: true
+    tags:
+      # {{< version 1.1.0 new >}} One of the options for displaying tags
+      theme: "image"
+      # {{< version 1.1.0 new >}} Text color
+      color: "white"
+      # {{< version 1.1.0 new >}} Backing color
+      background: "black"
+      # {{< version 1.1.0 new >}} Tag transparency
+      transparency: 0.9
 tags: []
 categories: []
 featuredImage: ""
@@ -260,6 +280,36 @@ You can use this to set emoji or partition number.
 
 ![Example with Emoji](h-emoji.jpg 'Example with Emoji')
 
+### Summary display settings
+
+You can customize the summary view to your taste by changing the following parameters.
+
+```yaml
+summaryStyle:
+    hiddenImage: false
+    hiddenDescription: false
+    hiddenTitle: true
+    tags:
+      theme: "image"
+      color: "white"
+      background: "black"
+      transparency: 0.9
+```
+
+What kinds of tags are available:
+* image. Tags on the picture
+* footer. Tags in footer summary
+* under-footer. Tags under summary
+
+These parameters, together with the scss override, allow you to customize the display quite flexibly.
+
+```css
+$article-summary-border-radius: 32px;
+$article-summary-image-border-radius: 30px;
+```
+
+The global setting is, as always, available in the main configuration file
+
 ## 3 Content Summaries
 
 **uBlogger** theme uses the summary of the content to display abstract information in the home page. Hugo can generate summaries of your content.
@@ -306,6 +356,16 @@ Because there are multiple ways in which a summary can be specified it is useful
 {{< admonition >}}
 It is not recommended to include rich text block elements in the summary, which will cause typographic errors. Such as code blocks, pictures, tables, etc.
 {{< /admonition >}}
+
+### TimeAgo
+{{< version 1.2.0 new >}}
+
+TimeAgo allows you to display the date of publication of a post in the style of social networks, as opposed to the current time. For example, "4 minutes ago," "one day ago"
+
+---
+![time ago](time_ago.jpg 'Here is what it looks like')
+
+---
 
 ## 4 Basic Markdown Syntax
 

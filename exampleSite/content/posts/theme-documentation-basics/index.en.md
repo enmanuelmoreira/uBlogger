@@ -1,13 +1,13 @@
 ---
 title: "Theme Documentation - Basics"
 date: 2020-03-06T21:29:01+08:00
-lastmod: 2020-12-05T18:55:56+03:00
+lastmod: 2020-12-15T11:21:43+03:00
 description: "Discover what the Hugo - uBlog theme is all about and the core-concepts behind it."
 resources:
 - name: "featured-image"
   src: "featured-image.jpg"
   
-upd: "Since the template began to support uPagge, you can not do without names. You can find the changes by tag 1.0.0."
+upd: "Since the template began to support uPagge, you can not do without names. You can find the changes by tag 1.x.x."
   
 page:
     theme: "wide"
@@ -48,7 +48,7 @@ The following steps are here to help you initialize your new website. If you don
 
 Hugo provides a `new` command to create a new website:
 
-```bash
+```shell script
 hugo new site my_website
 cd my_website
 ```
@@ -61,13 +61,13 @@ You can download the [latest release :(far fa-file-archive fa-fw): .zip file](ht
 
 Alternatively, clone this repository to the `themes` directory:
 
-```bash
+```shell script
 git clone https://github.com/upagge/uBlogger.git themes/uBlogger
 ```
 
 Or, create an empty git repository and make this repository a submodule of your site directory:
 
-```bash
+```shell script
 git init
 git submodule add https://github.com/upagge/uBlogger.git themes/uBlogger
 ```
@@ -89,7 +89,7 @@ theme = "uBlogger"
 
 [params]
   # uBlogger theme version
-  version = "1.0.X"
+  version = "1.3.X"
 
 [menu]
   [[menu.main]]
@@ -136,7 +136,7 @@ When building the website, you can set a theme by using `--theme` option. Howeve
 
 Here is the way to create your first post:
 
-```bash
+```shell script
 hugo new posts/first_post.md
 ```
 
@@ -154,13 +154,11 @@ You can copy /uBlogger/archetypes/default.md to your archetypes folder to create
 
 Launch by using the following command:
 
-```bash
+```shell script
 hugo serve
 ```
 
 Go to `http://localhost:1313`.
-
-![Basic configuration preview](basic-configuration-preview.png "Basic configuration preview")
 
 {{< admonition tip >}}
 When you run `hugo serve`, when the contents of the files change, the page automatically refreshes with the changes.
@@ -170,7 +168,7 @@ When you run `hugo serve`, when the contents of the files change, the page autom
 Since the theme use `.Scratch` in Hugo to implement some features,
 it is highly recommended that you add `--disableFastRender` parameter to `hugo server` command for the live preview of the page you are editing.
 
-```bash
+```shell script
 hugo serve --disableFastRender
 ```
 {{< /admonition >}}
@@ -179,7 +177,7 @@ hugo serve --disableFastRender
 
 When your site is ready to deploy, run the following command:
 
-```bash
+```shell script
 hugo
 ```
 
@@ -201,7 +199,7 @@ Please open the code block below to view the complete sample configuration :(far
 ```toml
 [params]
   # {{< version 0.2.0 changed >}} uBlogger theme version
-  version = "1.0.X"
+  version = "1.3.X"
   # site description
   description = "This is My New Hugo Site"
   # site keywords
@@ -415,6 +413,8 @@ Please open the code block below to view the complete sample configuration :(far
     hiddenFromHomePage = false
     # {{< version 0.2.0 >}} whether to hide a page from search results
     hiddenFromSearch = false
+    # {{< version 1.2.0 new >}} Allows you to hide the preview image on the article page
+    hiddenFeaturedImage = false
     # {{< version 0.2.0 >}} whether to enable twemoji
     twemoji = false
     # whether to enable lightgallery
@@ -429,6 +429,28 @@ Please open the code block below to view the complete sample configuration :(far
     linkToMarkdown = true
     # {{< version 0.2.4 >}} whether to show the full text content in RSS
     rssFullText = false
+    # {{< version 1.1.0 new >}} Post display settings on the page
+    [params.summary]
+      # {{< version 1.1.0 new >}} Display previews on the page of posts
+      hiddenImage = false
+      # {{< version 1.1.0 new >}} Allows you to hide the description
+      hiddenDescription = false
+      # {{< version 1.1.0 new >}} Allows you to hide the title
+      hiddenTitle = false
+    # {{< version 1.1.0 new >}} Tag display settings
+    [params.summary.tags]
+      # {{< version 1.1.0 new >}} One of the options for displaying tags
+      theme = "image"
+      # {{< version 1.1.0 new >}} Text color
+      color = "white"
+      # {{< version 1.1.0 new >}} Backing color
+      background = "black"
+      # {{< version 1.1.0 new >}} Tag transparency
+      transparency = 0.9
+    # {{< version 1.2.0 new >}} Fasting time display
+    [params.timeAgo]
+      enable = "false"
+      lang = "en"
     # {{< version 0.2.0 >}} Table of the contents config
     [params.page.toc]
       # whether to enable the table of the contents
@@ -502,87 +524,6 @@ Please open the code block below to view the complete sample configuration :(far
       Skype = false
       Trello = false
       Mix = false
-    # {{< version 0.2.0 changed >}} Comment config
-    [params.page.comment]
-      enable = true
-      # {{< version 1.0.0 new >}}
-      # {{< link "https://github.com/umputun/remark42/" Remark42 >}} comment config
-      [params.page.comment.remark42]
-        enable = false
-        # the location of your server with Remark42
-        host = "https://remark.example.com"
-        # remark42 supports comments for several sites at once, this identifier indicates which site to display comments for.
-        site = "you_site_key"
-        # design theme
-        theme = "light"
-        # language
-        locale = "en"
-        # enable or disable smiley support
-        emailSubscribe = "true"
-      # {{< link "https://disqus.com/" Disqus >}} comment config
-      [params.page.comment.disqus]
-        # {{< version 0.1.1 >}}
-        enable = false
-        # Disqus shortname to use Disqus in posts
-        shortname = ""
-      # {{< link "https://github.com/gitalk/gitalk" Gitalk >}} comment config
-      [params.page.comment.gitalk]
-        # {{< version 0.1.1 >}}
-        enable = false
-        owner = ""
-        repo = ""
-        clientId = ""
-        clientSecret = ""
-      # {{< link "https://github.com/xCss/Valine" Valine >}} comment config
-      [params.page.comment.valine]
-        enable = false
-        appId = ""
-        appKey = ""
-        placeholder = ""
-        avatar = "mp"
-        meta= ""
-        pageSize = 10
-        lang = ""
-        visitor = true
-        recordIP = true
-        highlight = true
-        enableQQ = false
-        serverURLs = ""
-        # {{< version 0.2.6 >}} emoji data file name, default is "google.yml"
-        # ("apple.yml", "google.yml", "facebook.yml", "twitter.yml")
-        # located in "themes/uBlogger/assets/data/emoji/" directory
-        # you can store your own data files in the same path under your project:
-        # "assets/data/emoji/"
-        emoji = ""
-      # {{< link "https://developers.facebook.com/docs/plugins/comments" "Facebook comment" >}} config
-      [params.page.comment.facebook]
-        enable = false
-        width = "100%"
-        numPosts = 10
-        appId = ""
-        languageCode = ""
-      # {{< version 0.2.0 >}} {{< link "https://comments.app/" "Telegram comments" >}} config
-      [params.page.comment.telegram]
-        enable = false
-        siteID = ""
-        limit = 5
-        height = ""
-        color = ""
-        colorful = true
-        dislikes = false
-        outlined = false
-      # {{< version 0.2.0 >}} {{< link "https://commento.io/" "Commento" >}} comment config
-      [params.page.comment.commento]
-        enable = false
-      # {{< version 0.2.5 >}} {{< link "https://utteranc.es/" "Utterances" >}} comment config
-      [params.page.comment.utterances]
-        enable = false
-        # owner/repo
-        repo = ""
-        issueTerm = "pathname"
-        label = ""
-        lightTheme = "github-light"
-        darkTheme = "github-dark"
     # {{< version 0.2.7 >}} Third-party library config
     [params.page.library]
       [params.page.library.css]
@@ -603,6 +544,88 @@ Please open the code block below to view the complete sample configuration :(far
       [params.page.seo.publisher]
         name = ""
         logoUrl = ""
+  
+    # {{< version 1.1.0 changed >}} Comment config
+    [params.comment]
+      enable = true
+      # {{< version 1.0.0 new >}}
+      # {{< link "https://github.com/umputun/remark42/" Remark42 >}} comment config
+      [params.comment.remark42]
+        enable = false
+        # the location of your server with Remark42
+        host = "https://remark.example.com"
+        # remark42 supports comments for several sites at once, this identifier indicates which site to display comments for.
+        site = "you_site_key"
+        # design theme
+        theme = "light"
+        # language
+        locale = "en"
+        # enable or disable smiley support
+        emailSubscribe = "true"
+      # {{< link "https://disqus.com/" Disqus >}} comment config
+      [params.comment.disqus]
+        # {{< version 0.1.1 >}}
+        enable = false
+        # Disqus shortname to use Disqus in posts
+        shortname = ""
+      # {{< link "https://github.com/gitalk/gitalk" Gitalk >}} comment config
+      [params.comment.gitalk]
+        # {{< version 0.1.1 >}}
+        enable = false
+        owner = ""
+        repo = ""
+        clientId = ""
+        clientSecret = ""
+      # {{< link "https://github.com/xCss/Valine" Valine >}} comment config
+      [params.comment.valine]
+        enable = false
+        appId = ""
+        appKey = ""
+        placeholder = ""
+        avatar = "mp"
+        meta= ""
+        pageSize = 10
+        lang = ""
+        visitor = true
+        recordIP = true
+        highlight = true
+        enableQQ = false
+        serverURLs = ""
+        # {{< version 0.2.6 >}} emoji data file name, default is "google.yml"
+        # ("apple.yml", "google.yml", "facebook.yml", "twitter.yml")
+        # located in "themes/uBlogger/assets/data/emoji/" directory
+        # you can store your own data files in the same path under your project:
+        # "assets/data/emoji/"
+        emoji = ""
+      # {{< link "https://developers.facebook.com/docs/plugins/comments" "Facebook comment" >}} config
+      [params.comment.facebook]
+        enable = false
+        width = "100%"
+        numPosts = 10
+        appId = ""
+        languageCode = ""
+      # {{< version 0.2.0 >}} {{< link "https://comments.app/" "Telegram comments" >}} config
+      [params.comment.telegram]
+        enable = false
+        siteID = ""
+        limit = 5
+        height = ""
+        color = ""
+        colorful = true
+        dislikes = false
+        outlined = false
+      # {{< version 0.2.0 >}} {{< link "https://commento.io/" "Commento" >}} comment config
+      [params.comment.commento]
+        enable = false
+      # {{< version 0.2.5 >}} {{< link "https://utteranc.es/" "Utterances" >}} comment config
+      [params.comment.utterances]
+        enable = false
+        # owner/repo
+        repo = ""
+        issueTerm = "pathname"
+        label = ""
+        lightTheme = "github-light"
+        darkTheme = "github-dark"
 
   # {{< version 0.2.5 >}} TypeIt config
   [params.typeit]
@@ -806,8 +829,6 @@ Or You can set more options through a dict:
 The default data of all supported social links is located in `themes/uBlogger/assets/data/social.yaml`,
 which is you can refer to.
 {{< /admonition >}}
-
-![Complete configuration preview](complete-configuration-preview.png "Complete configuration preview")
 
 ### 3.2 Favicons, Browserconfig, Manifest
 

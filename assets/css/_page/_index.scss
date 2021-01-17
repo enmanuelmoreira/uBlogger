@@ -1,16 +1,8 @@
-.page {
+.page, .content-block-position {
   position: relative;
   max-width: 800px;
   width: 60%;
   margin: 0 auto;
-
-  [data-header-desktop] & {
-    padding-top: $header-height;
-  }
-
-  [data-header-desktop=normal] & {
-    padding-top: 0;
-  }
 
   @include blur;
 }

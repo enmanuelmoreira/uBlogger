@@ -1,10 +1,19 @@
 .admonition {
+  border-radius: 6px;
   position: relative;
   margin: 1rem 0;
   padding: 0 .75rem;
   background-color: map-get($admonition-background-color-map, 'note');
   border-left: .25rem solid map-get($admonition-color-map, 'note');
   overflow: auto;
+
+  p:first-child, ul:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child, ul:last-child {
+    margin-bottom: 0;
+  }
 
   .admonition-title {
     font-weight: bold;
@@ -26,13 +35,14 @@
     font-size: 0.85rem;
     color: map-get($admonition-color-map, 'note');
     position: absolute;
-    top: .6rem;
+    top: .8rem;
     left: .4rem;
   }
 
   i.details-icon {
+    color: map-get($admonition-color-map, 'note');
     position: absolute;
-    top: .6rem;
+    top: .7rem;
     right: .3rem;
   }
 
@@ -41,6 +51,10 @@
       border-left-color: $color;
 
       i.icon {
+        color: $color;
+      }
+
+      i.details-icon {
         color: $color;
       }
     }

@@ -1,6 +1,6 @@
 {{- $cdn := .Scratch.Get "cdn" | default dict -}}
 {{- $fingerprint := .Scratch.Get "fingerprint" -}}
-{{- $comment := .Scratch.Get "comment" | default dict -}}
+{{- $comment := .Site.Params.Comment | default dict -}}
 {{- $commentConfig := dict -}}
 
 {{- if $comment.enable -}}
@@ -104,13 +104,14 @@
         {{- /* Remark42 Comments System */ -}}
         {{- $remark42 := $comment.remark42 | default dict -}}
         {{- if $remark42.enable -}}
-            <div id="remark42" class="comment"></div>
+            <div id="remark42" class="comment" style="padding-top: 1.5rem"></div>
             <script>
+                var themeRemark = document.body.getAttribute('theme')
                 var remark_config = {
                     host: '{{ $remark42.host }}',
                     site_id: '{{ $remark42.site }}',
                     components: ['embed'],
-                    theme: '{{ $remark42.theme }}',
+                    theme: themeRemark,
                     locale: '{{ $remark42.locale }}',
                     show_email_subscription: '{{ $remark42.emailSubscribe }}',
                     page_title: '{{ .Title }}'

@@ -7,6 +7,7 @@ code {
   font-size: $code-font-size;
   font-family: $code-font-family;
   color: $code-color;
+  border-radius: 3px;
 
   [theme=dark] & {
     color: $code-color-dark;
@@ -47,7 +48,7 @@ code, pre, .highlight table, .highlight tr, .highlight td {
     > table tr,
     > table td {
       margin: 0;
-      padding: 0;
+      padding: 5px;
       border: none !important;
       white-space: nowrap;
     }
@@ -71,6 +72,7 @@ code, pre, .highlight table, .highlight tr, .highlight td {
       font-weight: bold;
       color: $code-info-color;
       background: darken($code-background-color, 8%);
+      border-radius: 6px;
 
       [theme=dark] & {
         color: $code-info-color-dark;
@@ -158,12 +160,14 @@ code, pre, .highlight table, .highlight tr, .highlight td {
     .table-wrapper {
       max-height: 0;
       overflow-y: hidden;
+      border-radius: 0 0 6px 6px;
       @include details-transition-open;
     }
 
     &.open {
       .code-header {
         background: darken($code-background-color, 3%);
+        border-radius: 6px 6px 0 0;
 
         [theme=dark] & {
           background: darken($code-background-color-dark, 3%);

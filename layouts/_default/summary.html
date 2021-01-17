@@ -1,7 +1,10 @@
-{{- $params := .Params | merge .Site.Params.page -}}
+{{- $params := .Params | merge .Site.Params -}}
+{{- $tagsStyle := $params.summaryStyle.tags -}}
+{{- $tagsTheme := $params.summaryStyle.tags.theme | default "image" -}}
 
-<article class="single summary" itemscope itemtype="http://schema.org/Article">
+<article onclick="location.href='{{ $.RelPermalink }}'" class="summary summary-animation" itemscope itemtype="http://schema.org/Article" style="margin-bottom:0">
     {{- /* Featured image */ -}}
+    {{- if not $params.summaryStyle.hiddenImage -}}
     {{- $image := $params.featuredimagepreview | default $params.featuredimage -}}
     {{- with .Resources.GetMatch "featured-image" -}}
         {{- $image = .RelPermalink -}}
@@ -11,19 +14,29 @@
     {{- end -}}
     {{- with $image -}}
         <div class="featured-image-preview">
-            <a href="{{ $.RelPermalink }}">
-                {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/image.html" -}}
-            </a>
+            {{- if eq $tagsTheme "image" -}}
+            {{- with $.Params.tags -}}
+            <div class="post-tags-summary-image">
+                {{- range $index, $value := . -}}
+                {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+                <a class="post-tag-summary" href="{{ $tag.RelPermalink }}" style="{{ with $tagsStyle.color }}color: {{ . }}; {{ end }}{{ with $tagsStyle.background }}background: {{ . }}; {{ end }}{{ with $tagsStyle.transparency }}opacity: {{ . }}; {{ end }}"><span>{{ $tag.Title }}</span></a>
+                {{- end -}}
+            </div>
+            {{- end -}}
+            {{- end -}}
+            {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/image.html" -}}
         </div>
+    {{- end -}}
     {{- end -}}
     <div class="article-text">
         {{- /* Title */ -}}
-        <h2 class="single-title" itemprop="name headline">
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <h2 class="summary-title" itemprop="name headline">
+            {{ .Title }}
         </h2>
 
+        {{- if not $params.summaryStyle.hiddenMeta -}}
         {{- /* Meta */ -}}
-        <div class="post-meta">
+        <div class="post-meta summary-post-meta">
             {{- $authorName := $params.author | default .Site.Author.name | default " " -}}
             {{- if not (eq $authorName " ") -}}
             {{ $author := index .Site.Data.authors $authorName }}
@@ -35,9 +48,10 @@
             {{- end -}}
 
             {{- with .Site.Params.dateFormat | default "2006-01-02" | .PublishDate.Format -}}
-            &nbsp;&#183;&nbsp;<span class="post-publish"><i class="far fa-clock fa-fw"></i>
-                {{- printf `<time datetime="%v">%v</time>` . . | safeHTML -}}
-         </span>
+            {{- $timeAgoDate:= $.Site.Params.TimeAgo.DateFormat | default "2006-01-02" | $.PublishDate.Format -}}
+            &nbsp;&nbsp;&nbsp;<span class="post-publish"><i class="far fa-clock fa-fw"></i>
+                {{- printf `<time class="timeago" datetime="%v">%v</time>` $timeAgoDate . | safeHTML -}}
+            </span>
             {{- end -}}
 
             {{- $categories := slice -}}
@@ -46,43 +60,55 @@
             {{- $categories = $categories | append (printf `<a href="%v"><i class="far fa-folder fa-fw"></i>%v</a>` $category.RelPermalink $category.Title) -}}
             {{- end -}}
             {{- with delimit $categories "&nbsp;" -}}
-            &nbsp;&#183;&nbsp;<span class="post-category">
+            &nbsp;&nbsp;&nbsp;<span class="post-category">
                 {{ . }}
             </span>
             {{- end -}}
 
-            {{- $comment := .Site.Params.Page.Comment -}}
+            {{- $comment := .Site.Params.Comment -}}
             {{- $remark42 := $comment.remark42 | default dict -}}
             {{- if $remark42.enable -}}
-            &nbsp;&#183;&nbsp;<i class="far fa-comment fa-fw"></i>
+            &nbsp;&nbsp;&nbsp;<i class="far fa-comment fa-fw"></i>
             <span class="remark42__counter" data-url="{{ .Permalink }}">
 
             </span>
             {{- end -}}
         </div>
+        {{- end -}}
 
         {{- /* Summary content */ -}}
-        <div class="content">
+        {{- if not $params.summaryStyle.hiddenDescription -}}
+        <div class="content summary-content">
             {{- with .Summary -}}
             {{- dict "Content" . "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}
             {{- else -}}
             {{- .Description | safeHTML -}}
             {{- end -}}
         </div>
+        {{- end -}}
 
-        {{- /* Footer */ -}}
-        <div class="post-footer">
-            <a href="{{ .RelPermalink }}">{{ T "readMore" }}</a>
-            {{- with .Params.tags -}}
-            <div class="post-tags-summary">
-                <i class="fas fa-tags fa-fw"></i>&nbsp;
-                {{- range $index, $value := . -}}
-                {{- if gt $index 0 }},&nbsp;{{ end -}}
-                {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
-                <a href="{{ $tag.RelPermalink }}">{{ $tag.Title }}</a>
-                {{- end -}}
-            </div>
+        {{- if eq $tagsTheme "footer" -}}
+        {{- with $.Params.tags -}}
+        <div class="post-tags-summary-footer">
+            {{- range $index, $value := . -}}
+            {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+            <a class="post-tag-summary" href="{{ $tag.RelPermalink }}" style="{{ with $tagsStyle.color }}color: {{ . }}; {{ end }}{{ with $tagsStyle.background }}background: {{ . }}; {{ end }}{{ with $tagsStyle.transparency }}opacity: {{ . }}; {{ end }}">{{ $tag.Title }}</a>
             {{- end -}}
         </div>
+        {{- end -}}
+        {{- end -}}
+
     </div>
 </article>
+
+<div class="post-tags-summary-under-footer">
+{{- with $.Params.tags -}}
+    <div class="post-tags-summary-under-footer-display" {{- if eq $tagsTheme "under-footer" -}}style="display: inline-block;"{{- end -}}>
+        {{- range $index, $value := . -}}
+        {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+        <a class="post-tag-summary" href="{{ $tag.RelPermalink }}" style="{{ with $tagsStyle.color }}color: {{ . }}; {{ end }}{{ with $tagsStyle.background }}background: {{ . }}; {{ end }}{{ with $tagsStyle.transparency }}opacity: {{ . }}; {{ end }}">{{ $tag.Title }}</a>
+        {{- end -}}
+    </div>
+{{- end -}}
+</div>
+
